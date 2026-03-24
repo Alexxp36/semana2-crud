@@ -10,13 +10,12 @@ app.use(express.json());
 // Servir archivos del frontend
 app.use(express.static(path.join(__dirname, "public")));
 
-// Conexión a PostgreSQL
+// Conexión a PostgreSQL (RENDER)
 const pool = new Pool({
-    user: "postgres",
-    host: "localhost",
-    database: "crud_usuarios",
-    password: "2113", 
-    port: 5432,
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false,
+    },
 });
 
 // Obtener usuarios
@@ -83,5 +82,5 @@ app.delete("/usuarios/:id", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+    console.log(`Servidor corriendo en puerto ${PORT}`);
 });
